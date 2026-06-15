@@ -72,8 +72,12 @@ function displayGridContent() {
         const imageUrl =
           product.image_urls || "https://via.placeholder.com/280x200";
 
-        // Pentru că nu există ID, codificăm Titlul pentru a-l folosi ca identificator în URL
-        const productIdentifier = encodeURIComponent(product.title);
+        // TRANSFORMĂM TITLUL ÎN NUME DE FIȘIER CURAT (Identic cu cel din genera_pagini.js)
+        const safeTitle = product.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "-") // Înlocuim spațiile/caracterele speciale cu cratime
+          .replace(/-+/g, "-") // Eliminăm cratimele duble
+          .replace(/^-|-$/g, ""); // Curățăm marginile
 
         return `
                 <div class="product-card">
@@ -81,7 +85,7 @@ function displayGridContent() {
                     <div class="product-info">
                         <h2 class="product-title">${product.title}</h2>
                         <p class="product-price">${product.price} RON</p>
-                        <a href="produs.html?id=${productIdentifier}" class="affiliate-btn">
+                        <a href="${safeTitle}.html" class="affiliate-btn">
                             Detalii Produs
                         </a>
                     </div>
